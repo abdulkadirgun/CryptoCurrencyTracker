@@ -2,9 +2,7 @@ package com.example.cryptocurrencytracker.data.repository
 
 import android.util.Log
 import com.example.cryptocurrencytracker.data.source.local.db.entities.CoinEntity
-import com.example.cryptocurrencytracker.data.source.remote.crypto_api.dto.CoinDetailItem
-import com.example.cryptocurrencytracker.data.source.remote.crypto_api.dto.CoinItem
-import com.example.cryptocurrencytracker.data.source.remote.firestore.FavoriteCoin
+import com.example.cryptocurrencytracker.domain.model.CoinItem
 import com.example.cryptocurrencytracker.domain.repository.CryptoCurrencyRepository
 import com.example.cryptocurrencytracker.domain.sources.AuthDataSource
 import com.example.cryptocurrencytracker.domain.sources.CryptoApiDataSource
@@ -12,15 +10,8 @@ import com.example.cryptocurrencytracker.domain.sources.FirestoreDataSource
 import com.example.cryptocurrencytracker.domain.sources.RoomDataSource
 import com.example.cryptocurrencytracker.util.Resource
 import com.google.firebase.auth.AuthResult
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import java.lang.Exception
 
 
 class CryptoCurrencyRepositoryImpl(
@@ -62,6 +53,10 @@ class CryptoCurrencyRepositoryImpl(
         }
     }
 
+    override fun getSearchResult(coinName: String): Flow<List<CoinEntity>> {
+        return roomDataSource.getSearchResult(coinName)
+    }
+
     override suspend fun getCoinById(coinId : String) = cryptoApiDataSource.getCoinById(coinId)
 
 
@@ -77,9 +72,23 @@ class CryptoCurrencyRepositoryImpl(
         return authDataSource.login(email, password)
     }
 
-    override suspend fun addThisCoinIntoUserFav(favoriteCoin: FavoriteCoin) {
+    override suspend fun addThisCoinToFav(coin: CoinItem): Flow<Resource<Void>> {
         val mUserId = authDataSource.getUserId()
-        firestoreDataSource.addUserFavouriteCoin(userId = mUserId, favoriteCoin = favoriteCoin)
+        return firestoreDataSource.addThisCoinToFav(userId = mUserId, coin = coin)
     }
 
+    override suspend fun deleteThisCoinFromFav(coin: CoinItem): Flow<Resource<Void>> {
+        val mUserId = authDataSource.getUserId()
+        return firestoreDataSource.deleteThisCoinFromFav(userId = mUserId, coin = coin)
+    }
+
+    override suspend fun getFavCoins(): Flow<Resource<MutableList<CoinItem>>> {
+        val mUserId = authDataSource.getUserId()
+        return firestoreDataSource.getFavCoins(userId = mUserId)
+    }
+
+    override suspend fun checkCoinIsInFavList(coin: CoinItem): Flow<Resource<Boolean>> {
+        val mUserId = authDataSource.getUserId()
+        return firestoreDataSource.checkCoinIsInFavList(userId = mUserId, coin = coin)
+    }
 }

@@ -1,8 +1,8 @@
 package com.example.cryptocurrencytracker.data.source.remote.crypto_api
 
 import android.util.Log
-import com.example.cryptocurrencytracker.data.source.remote.crypto_api.dto.CoinDetailItem
-import com.example.cryptocurrencytracker.data.source.remote.crypto_api.dto.CoinItem
+import com.example.cryptocurrencytracker.domain.model.CoinDetailItem
+import com.example.cryptocurrencytracker.domain.model.CoinItem
 import com.example.cryptocurrencytracker.domain.sources.CryptoApiDataSource
 import com.example.cryptocurrencytracker.util.Resource
 import kotlinx.coroutines.flow.Flow

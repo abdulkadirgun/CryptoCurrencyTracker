@@ -4,10 +4,10 @@
 
     <item android:title="Home"
         android:id="@+id/homeFragment"
-        android:icon="@android:drawable/ic_menu_manage"
+        android:icon="@drawable/home_icon"
         />
     <item android:title="Favourites"
         android:id="@+id/favouritesFragment"
-        android:icon="@android:drawable/ic_lock_idle_alarm"
+        android:icon="@drawable/fav_icon_selected"
         />
 </menu>

@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.cryptocurrencytracker.data.source.local.db.entities.CoinEntity
 import kotlinx.coroutines.flow.Flow
-import retrofit2.http.DELETE
 
 @Dao
 interface CryptoCurrencyDao {
@@ -20,4 +19,9 @@ interface CryptoCurrencyDao {
 
     @Query("DELETE FROM CoinEntity")
     suspend fun deleteAllData()
+
+    @Query("SELECT * FROM CoinEntity WHERE name LIKE '%' || :coinName || '%'")
+    fun getSearchResult(coinName: String): Flow<List<CoinEntity>>
+
+
 }

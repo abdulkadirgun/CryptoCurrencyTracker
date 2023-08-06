@@ -38,7 +38,8 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNavViewIsNotVisibleList = arrayListOf(
             R.id.loginFragment,
-            R.id.registerFragment
+            R.id.registerFragment,
+            R.id.detailFragment
         )
 
         navController.addOnDestinationChangedListener { _, destination, _ ->

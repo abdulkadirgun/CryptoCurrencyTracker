@@ -23,4 +23,8 @@ class RoomDataSourceImpl (
         cryptoCurrencyDB.getDao().deleteAllData()
     }
 
+    override fun getSearchResult(coinName: String): Flow<List<CoinEntity>> {
+        return cryptoCurrencyDB.getDao().getSearchResult(coinName)
+    }
+
 }

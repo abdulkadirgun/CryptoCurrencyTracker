@@ -4,52 +4,164 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.login.LoginFragment">
+    android:background="#F3F3F3"
+    android:padding="16dp"
+    tools:context=".ui.screens.login.LoginFragment">
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+    <!-- App Icon -->
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".5"
+        app:layout_constraintDimensionRatio="1"
+        android:src="@drawable/cryptocurrency"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="32dp"
+        />
+
+    <!-- App Title -->
     <TextView
         android:id="@+id/title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Login"
-        android:textSize="36sp"/>
+        android:text="Bitcoin Ticker"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"/>
 
-    <EditText
-        android:id="@+id/email"
+    <!-- Email EditText Wrapped in MaterialCardView -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/emailCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintTop_toBottomOf="@id/title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:hint="email"/>
+        android:layout_marginBottom="8dp">
 
-    <EditText
-        android:id="@+id/password"
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="Email"
+            android:padding="12dp"
+            android:textSize="16sp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Password EditText Wrapped in MaterialCardView -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/passwordCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/email"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintTop_toBottomOf="@id/emailCard"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:hint="password"/>
+        android:layout_marginBottom="16dp">
 
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:background="@null"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:textSize="16sp"/>
 
+    </com.google.android.material.card.MaterialCardView>
 
+    <!-- Login Button -->
+
+    <!-- Register TextView -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/login_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/password"
-        android:text="login"/>
+        android:layout_marginTop="44dp"
+        android:backgroundTint="@color/primary_color"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/login"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passwordCard" />
 
     <TextView
         android:id="@+id/register_now"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/register_now"
+        android:textSize="16sp"
+        android:textColor="#2196F3"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/login_btn"
-        android:text="register now"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+        <Button
+            android:id="@+id/go_to_home_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="go to home"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:indeterminateTint="@color/primary_color"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="error"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"/>
 
 
 

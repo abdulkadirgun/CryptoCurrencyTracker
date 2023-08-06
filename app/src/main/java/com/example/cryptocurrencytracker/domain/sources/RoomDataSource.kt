@@ -10,5 +10,7 @@ interface RoomDataSource {
     fun getDataFromDB() : Flow<List<CoinEntity>>
 
     suspend fun deleteAllData()
+    fun getSearchResult(coinName: String): Flow<List<CoinEntity>>
+
 
 }
