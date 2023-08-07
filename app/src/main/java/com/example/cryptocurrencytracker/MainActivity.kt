@@ -1,23 +1,20 @@
 package com.example.cryptocurrencytracker
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.whenResumed
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.cryptocurrencytracker.databinding.ActivityMainBinding
-import com.example.cryptocurrencytracker.util.Resource
 import com.example.cryptocurrencytracker.util.hide
 import com.example.cryptocurrencytracker.util.show
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
@@ -48,6 +45,8 @@ class MainActivity : AppCompatActivity() {
             else
                 binding.bottomNavView.show()
         }
+
+        mainActivityViewModel.scheduleWorksToSyncAppWithBackend()
 
     }
 

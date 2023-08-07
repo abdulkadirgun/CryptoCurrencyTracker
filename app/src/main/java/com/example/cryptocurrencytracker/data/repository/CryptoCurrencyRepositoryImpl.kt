@@ -25,7 +25,7 @@ class CryptoCurrencyRepositoryImpl(
 
     override fun getDataFromDB() = roomDataSource.getDataFromDB()
 
-    override suspend fun getCoinList(): Flow<Resource<List<CoinEntity>>> {
+    override suspend fun getCoinListFromRemoteAndSaveDB(): Flow<Resource<Boolean>> {
 
         return flow {
             emit(Resource.Loading())
@@ -41,12 +41,13 @@ class CryptoCurrencyRepositoryImpl(
                             coinsResource.data?.let { coinList ->
                                 roomDataSource.saveDataToDB(coinList.map { it.toEntity() })
                             }
+                            emit(Resource.Success(true))
                             Log.d("CryptoCurrencyRepository", "db'ye kaydedildi")
-                            val dbData = roomDataSource.getDataFromDB()
+                           /* val dbData = roomDataSource.getDataFromDB()
                             dbData.collect { coinsDB ->
                                 emit(Resource.Success(coinsDB))
                                 Log.d("CryptoCurrencyRepository", "coinsDB emit ediliyor")
-                            }
+                            }*/
                         }
                     }
                 }
@@ -60,8 +61,8 @@ class CryptoCurrencyRepositoryImpl(
     override suspend fun getCoinById(coinId : String) = cryptoApiDataSource.getCoinById(coinId)
 
 
-    override fun checkUserSignedOrNot() {
-
+    override suspend fun checkUserSignedOrNot(): Flow<Resource<Boolean>> {
+        return authDataSource.checkUserSignedOrNot()
     }
 
     override suspend fun register(email: String, password: String): Flow<Resource<AuthResult>> {

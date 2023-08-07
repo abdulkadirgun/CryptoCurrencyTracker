@@ -1,12 +1,17 @@
 package com.example.cryptocurrencytracker.ui.screens.detail
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -20,6 +25,7 @@ import com.example.cryptocurrencytracker.domain.model.CoinItem
 import com.example.cryptocurrencytracker.util.Resource
 import com.example.cryptocurrencytracker.util.hide
 import com.example.cryptocurrencytracker.util.isNumber
+import com.example.cryptocurrencytracker.util.roundToTwoDecimal
 import com.example.cryptocurrencytracker.util.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -37,6 +43,22 @@ class DetailFragment : Fragment() {
     private val coinId by lazy { DetailFragmentArgs.fromBundle(requireArguments()).coinId }
     private var refreshJob : Job? = null
     private var coinItem: CoinItem? =null
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                // Permission is granted. Continue the action or workflow in your
+                // app.
+            } else {
+                // Explain to the user that the feature is unavailable because the
+                // feature requires a permission that the user has denied. At the
+                // same time, respect the user's decision. Don't link to system
+                // settings in an effort to convince the user to change their
+                // decision.
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -112,7 +134,7 @@ class DetailFragment : Fragment() {
     private fun setClicks() {
         binding.refreshIntervalApplyBtn.setOnClickListener {
 
-            //todo sadece fiyatı gğncelle
+            //todo sadece fiyatı güncelle
             if (binding.refreshIntervalEt.isNumber())
                 handleRefreshPriceFeature(binding.refreshIntervalEt.text.toString().toLong())
             else
@@ -126,6 +148,17 @@ class DetailFragment : Fragment() {
                     viewModel.addCoinIntoFav(coinItem!!)
                 else
                     viewModel.deleteCoinFromFav(coinItem!!)
+            }
+
+            /**
+            * request permission for android 13 and upper
+            * */
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
 
@@ -154,7 +187,7 @@ class DetailFragment : Fragment() {
             Glide.with(requireContext()).load(data.image.large).into(binding.coinImg)
             coinName.text = data.name
             coinSymbol.text = data.symbol
-            coinCurrentPrice.text = getString(R.string.x_usd, data.market_data.current_price.usd)
+            coinCurrentPrice.text = getString(R.string.x_usd, data.market_data.current_price.usd.roundToTwoDecimal())
             hashingAlgorithm.text = data.hashing_algorithm
             coinDescription.text = data.description.en
 

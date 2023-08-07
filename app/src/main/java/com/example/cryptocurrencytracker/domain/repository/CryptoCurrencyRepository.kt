@@ -17,13 +17,13 @@ interface CryptoCurrencyRepository {
     suspend fun getCoinById(coinId: String) : Flow<Resource<CoinDetailItem>>
 
     //Api and Room
-    suspend fun getCoinList() : Flow<Resource<List<CoinEntity>>>
+    suspend fun getCoinListFromRemoteAndSaveDB() : Flow<Resource<Boolean>>
 
     fun getSearchResult(coinName: String): Flow<List<CoinEntity>>
 
 
     //Auth
-    fun checkUserSignedOrNot()
+    suspend fun checkUserSignedOrNot(): Flow<Resource<Boolean>>
     suspend fun register(email : String, password: String) : Flow<Resource<AuthResult>>
     suspend fun login(email : String, password: String) : Flow<Resource<AuthResult>>
 

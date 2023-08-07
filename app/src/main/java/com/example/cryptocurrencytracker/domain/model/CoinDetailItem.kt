@@ -1,5 +1,7 @@
 package com.example.cryptocurrencytracker.domain.model
 
+import com.example.cryptocurrencytracker.util.roundToTwoDecimal
+
 data class CoinDetailItem(
     val hashing_algorithm: String,
     val id: String,
@@ -15,7 +17,7 @@ data class CoinDetailItem(
             name = name,
             symbol= symbol,
             image = image.large,
-            current_price = market_data.current_price.usd
+            current_price = market_data.current_price.usd.roundToTwoDecimal()
         )
 
     }

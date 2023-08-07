@@ -15,18 +15,29 @@ class AuthDataSourceImpl(
     private val auth: FirebaseAuth
     ) : AuthDataSource {
 
-    // todo
-    override fun checkUserSignedOrNot() {
+    override suspend fun checkUserSignedOrNot(): Flow<Resource<Boolean>> {
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-        //reload()
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val currentUser = auth.currentUser
+                if (currentUser != null) {
+                    emit(Resource.Success(true))
+                    Log.d("AuthDataSource", "checkUserSignedOrNot true")
+
+                }
+                else {
+                    emit(Resource.Success(false))
+                    Log.d("AuthDataSource", "checkUserSignedOrNot false")
+                }
+            }
+            catch (e: Exception){
+                emit(Resource.Error(e.message))
+                Log.d("AuthDataSource", "checkUserSignedOrNot error")
+            }
         }
     }
 
-
-
-    // todo
     override suspend fun register(email : String, password: String): Flow<Resource<AuthResult>> {
         return flow {
             emit(Resource.Loading())
@@ -41,7 +52,6 @@ class AuthDataSourceImpl(
         }
     }
 
-    // todo
     override suspend fun login(email : String, password: String): Flow<Resource<AuthResult>> {
         return flow {
             emit(Resource.Loading())

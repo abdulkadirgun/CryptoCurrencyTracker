@@ -7,7 +7,7 @@ data class CoinItem(
     val name: String = "",
     val symbol: String = "",
     val image: String = "",
-    val current_price: Int = 0
+    val current_price: Double = 0.0
 ){
     fun toEntity(): CoinEntity{
         return CoinEntity(

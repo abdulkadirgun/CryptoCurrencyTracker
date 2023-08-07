@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import kotlin.math.round
 
 fun View.show(){
     this.visibility = View.VISIBLE
@@ -41,4 +42,7 @@ fun EditText.isEmailValid(): Boolean {
 fun String.showToast(context : Context) {
     Toast.makeText(context, this, Toast.LENGTH_LONG).show()
 }
+
+fun Double.roundToTwoDecimal(): Double =  round(this * 100) / 100
+
 

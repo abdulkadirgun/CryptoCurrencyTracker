@@ -26,7 +26,7 @@ class CryptoApiDataSourceImpl(
                 emit(Resource.Error("please check your internet connection"))
             }
             catch (e: Exception){
-                emit(Resource.Error(e.localizedMessage ?: "an error was occurred"))
+                emit(Resource.Error(e.localizedMessage ?: "server error"))
             }
         }
     }
@@ -43,7 +43,8 @@ class CryptoApiDataSourceImpl(
                 emit(Resource.Error("please check your internet connection"))
             }
             catch (e: Exception){
-                emit(Resource.Error(e.localizedMessage ?: "an error was occurred"))
+                emit(Resource.Error(e.localizedMessage ?: "server error"))
             }
-        }    }
+        }
+    }
 }

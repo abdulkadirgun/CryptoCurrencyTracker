@@ -42,9 +42,11 @@ class LoginFragment : Fragment() {
 
         setClicks()
 
+        viewModel.checkUserLoggedIn()
+
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.loginInfo.collect{ result->
+                viewModel.isUserAlsoLoggedIn.collect{ result->
                     result?.let {
                         when(result){
                             is Resource.Error -> {
@@ -59,17 +61,44 @@ class LoginFragment : Fragment() {
                                 binding.progressBar.show()
                             }
                             is Resource.Success -> {
-                                Log.d("LoginFragment", "loginInfo: Success${result.data?.user?.email}")
-                                binding.progressBar.hide()
-                                binding.mainContainer.show()
-                                "logged in successfully ".showToast(requireContext())
-                                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+                                if (result.data!!){
+                                    goToHomePage()
+                                    "user already logged in".showToast(requireContext())
+                                }
+                                else
+                                    viewModel.loginInfo.collect{ result->
+                                        result?.let {
+                                            when(result){
+                                                is Resource.Error -> {
+                                                    Log.d("LoginFragment", "loginInfo: Error${result.message}")
+                                                    binding.progressBar.hide()
+                                                    binding.mainContainer.show()
+                                                    result.message?.showToast(requireContext())
+                                                }
+                                                is Resource.Loading -> {
+                                                    Log.d("LoginFragment", "loginInfo: Loading")
+                                                    binding.mainContainer.hide()
+                                                    binding.progressBar.show()
+                                                }
+                                                is Resource.Success -> {
+                                                    goToHomePage()
+                                                    "logged in successfully ".showToast(requireContext())
+                                                }
+                                            }
+                                        }
+                                    }
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun goToHomePage(){
+        binding.progressBar.hide()
+        binding.mainContainer.show()
+        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
     }
 
     private fun setClicks() {
