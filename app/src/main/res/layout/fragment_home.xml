@@ -8,8 +8,11 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/search_container"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/logout_btn"
+        android:layout_marginEnd="16dp"
         app:cardCornerRadius="16dp"
         app:strokeWidth="2dp"
         app:strokeColor="@color/black"
@@ -38,6 +41,27 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <ImageView
+        android:id="@+id/logout_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_logout_24"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/search_container"
+        app:tint="@color/primary_color"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/logout"
+        app:layout_constraintTop_toBottomOf="@id/logout_btn"
+        app:layout_constraintEnd_toEndOf="@id/logout_btn"
+        app:layout_constraintStart_toStartOf="@id/logout_btn"/>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv"
         android:layout_width="match_parent"
@@ -45,6 +69,7 @@
         app:layout_constraintTop_toBottomOf="@id/search_container"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/coin_row_item"
+        android:visibility="gone"
         />
 
     <ProgressBar

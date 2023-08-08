@@ -14,7 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.cryptocurrencytracker.databinding.FragmentRegisterBinding
 import com.example.cryptocurrencytracker.util.Resource
-import com.example.cryptocurrencytracker.util.hide
+import com.example.cryptocurrencytracker.util.gone
 import com.example.cryptocurrencytracker.util.isEmailValid
 import com.example.cryptocurrencytracker.util.show
 import com.example.cryptocurrencytracker.util.showToast
@@ -51,21 +51,22 @@ class RegisterFragment : Fragment() {
                         when(result){
                             is Resource.Error -> {
                                 Log.d("RegisterFragment", "registerInfo: Error${result.message}")
-                                binding.progressBar.hide()
+                                binding.progressBar.gone()
                                 binding.mainContainer.show()
                                 result.message?.showToast(requireContext())
                             }
                             is Resource.Loading -> {
                                 Log.d("RegisterFragment", "registerInfo: Loading")
-                                binding.mainContainer.hide()
+                                binding.mainContainer.gone()
                                 binding.progressBar.show()
                             }
                             is Resource.Success -> {
                                 Log.d("RegisterFragment", "registerInfo: Success${result.data?.user?.email}")
-                                binding.progressBar.hide()
+                                binding.progressBar.gone()
                                 binding.mainContainer.show()
                                 "registered successfully".showToast(requireContext())
-                                findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
+                                findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment(result.data?.user?.email!!))
+
                             }
                         }
                     }

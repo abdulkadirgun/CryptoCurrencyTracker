@@ -60,30 +60,45 @@
                 android:layout_height="wrap_content"
                 tools:text="28000 USD"
                 app:layout_constraintTop_toBottomOf="@id/fav_btn"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="16dp"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="16dp"/>
+
+            <ProgressBar
+                android:id="@+id/coin_current_price_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/fav_btn"
+                android:layout_marginStart="16dp"
+                android:indeterminateTint="@color/primary_color"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/change_percentage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="-1.006"
+                android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="@id/coin_current_price"
                 app:layout_constraintBottom_toBottomOf="@id/coin_current_price"
-                android:layout_marginStart="32dp"
-                android:textSize="20sp"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/coin_current_price" />
 
             <TextView
                 android:id="@+id/hashing_algorithm"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                tools:text="SHA-256"
+                tools:text="SHA-256fdcsdfsdfv"
                 app:layout_constraintTop_toTopOf="@id/coin_current_price"
                 app:layout_constraintBottom_toBottomOf="@id/coin_current_price"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:lines="1"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent" />
 

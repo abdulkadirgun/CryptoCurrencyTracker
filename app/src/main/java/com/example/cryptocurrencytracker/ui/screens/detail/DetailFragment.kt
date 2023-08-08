@@ -2,7 +2,6 @@ package com.example.cryptocurrencytracker.ui.screens.detail
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -19,10 +18,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.example.cryptocurrencytracker.R
-import com.example.cryptocurrencytracker.domain.model.CoinDetailItem
 import com.example.cryptocurrencytracker.databinding.FragmentDetailBinding
+import com.example.cryptocurrencytracker.domain.model.CoinDetailItem
 import com.example.cryptocurrencytracker.domain.model.CoinItem
 import com.example.cryptocurrencytracker.util.Resource
+import com.example.cryptocurrencytracker.util.gone
 import com.example.cryptocurrencytracker.util.hide
 import com.example.cryptocurrencytracker.util.isNumber
 import com.example.cryptocurrencytracker.util.roundToTwoDecimal
@@ -83,27 +83,42 @@ class DetailFragment : Fragment() {
 
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.coinDetail.collect{ coin->
-                    coin?.let {
-                        when (coin) {
+                viewModel.coinDetail.collect{ state->
+                    state?.let {
+                        when (state.coinDetail) {
                             is Resource.Error -> {
-                                binding.mainContainer.hide()
-                                binding.progressBar.hide()
+                                binding.mainContainer.gone()
+                                binding.progressBar.gone()
                                 binding.errorText.apply {
                                     show()
-                                    text = coin.message
+                                    text = state.coinDetail.message
                                 }
                             }
 
                             is Resource.Loading -> {
-                                binding.mainContainer.hide()
-                                binding.progressBar.show()
+                                if (state.refreshing){
+                                    binding.coinCurrentPriceProgress.show()
+                                    binding.coinCurrentPrice.hide()
+                                    binding.changePercentage.hide()
+                                }
+                                else{
+                                    binding.mainContainer.gone()
+                                    binding.progressBar.show()
+                                }
+
                             }
 
                             is Resource.Success -> {
-                                binding.mainContainer.show()
-                                binding.progressBar.hide()
-                                setData(coin.data!!)
+                                if (state.refreshing){
+                                    binding.coinCurrentPriceProgress.gone()
+                                    binding.coinCurrentPrice.show()
+                                    binding.changePercentage.show()
+                                }
+                                else{
+                                    binding.mainContainer.show()
+                                    binding.progressBar.gone()
+                                }
+                                setData(state.coinDetail.data!!, state.refreshing)
                             }
                         }
                     }
@@ -143,6 +158,7 @@ class DetailFragment : Fragment() {
 
 
         binding.favBtn.setOnCheckedChangeListener { buttonView, isChecked ->
+
             if (buttonView.isPressed) {
                 if (isChecked)
                     viewModel.addCoinIntoFav(coinItem!!)
@@ -150,9 +166,7 @@ class DetailFragment : Fragment() {
                     viewModel.deleteCoinFromFav(coinItem!!)
             }
 
-            /**
-            * request permission for android 13 and upper
-            * */
+            /** request permission for android 13 and upper */
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                 ContextCompat.checkSelfPermission(
                     requireContext(),
@@ -165,18 +179,18 @@ class DetailFragment : Fragment() {
     }
 
     private fun handleRefreshPriceFeature(interval: Long) {
-        //to avoid multiple refresh
+        /** to avoid multiple refresh*/
         refreshJob?.cancel()
 
         refreshJob = lifecycleScope.launch {
             while(true){
                 delay(interval*1000)
-                viewModel.getCoinDetail(coinId)
+                viewModel.getCoinDetail(coinId, isRefreshing = true)
             }
         }
     }
 
-    private fun setData(data: CoinDetailItem) {
+    private fun setData(data: CoinDetailItem, refreshOnlyPrice: Boolean) {
 
         Log.d("setData", "data: $data ")
 
@@ -184,16 +198,36 @@ class DetailFragment : Fragment() {
         viewModel.checkIsCoinInFav(coinItem!!)
 
         binding.apply {
-            Glide.with(requireContext()).load(data.image.large).into(binding.coinImg)
-            coinName.text = data.name
-            coinSymbol.text = data.symbol
-            coinCurrentPrice.text = getString(R.string.x_usd, data.market_data.current_price.usd.roundToTwoDecimal())
-            hashingAlgorithm.text = data.hashing_algorithm
-            coinDescription.text = data.description.en
-
+            binding.coinCurrentPrice.text =
+                getString(R.string.x_usd, data.market_data.current_price.usd.roundToTwoDecimal())
             val percentage = data.market_data.price_change_percentage_24h
-            changePercentage.text = percentage.toString().take(5)
-            if (percentage > 0) changePercentage.setTextColor(Color.GREEN) else changePercentage.setTextColor(Color.RED)
+            changePercentage.text = getString(R.string.x_percentage, percentage.toString().take(5))
+            if (percentage > 0)
+                changePercentage.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.theGreen
+                    )
+                )
+            else
+                changePercentage.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.theRed
+                    )
+                )
+        }
+
+        if (!refreshOnlyPrice) {
+            binding.apply {
+                Glide.with(requireContext()).load(data.image.large).into(binding.coinImg)
+                coinName.text = data.name
+                coinSymbol.text = data.symbol
+                hashingAlgorithm.text = data.hashing_algorithm
+                coinDescription.text = data.description.en
+
+
+            }
         }
     }
 

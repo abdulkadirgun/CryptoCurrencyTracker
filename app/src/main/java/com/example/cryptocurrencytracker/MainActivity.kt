@@ -5,16 +5,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.example.cryptocurrencytracker.databinding.ActivityMainBinding
-import com.example.cryptocurrencytracker.util.hide
+import com.example.cryptocurrencytracker.util.gone
 import com.example.cryptocurrencytracker.util.show
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
@@ -41,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (bottomNavViewIsNotVisibleList.contains(destination.id))
-                binding.bottomNavView.hide()
+                binding.bottomNavView.gone()
             else
                 binding.bottomNavView.show()
         }

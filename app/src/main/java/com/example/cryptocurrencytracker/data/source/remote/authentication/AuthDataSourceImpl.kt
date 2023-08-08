@@ -37,6 +37,21 @@ class AuthDataSourceImpl(
             }
         }
     }
+    override suspend fun logout(): Flow<Resource<Boolean>> {
+        // Check if user is signed in (non-null) and update UI accordingly.
+        return flow {
+            emit(Resource.Loading())
+            try {
+                auth.signOut()
+                emit(Resource.Success(true))
+                Log.d("AuthDataSource", "checkUserSignedOrNot true")
+            }
+            catch (e: Exception){
+                emit(Resource.Error(e.message))
+                Log.d("AuthDataSource", "checkUserSignedOrNot error")
+            }
+        }
+    }
 
     override suspend fun register(email : String, password: String): Flow<Resource<AuthResult>> {
         return flow {

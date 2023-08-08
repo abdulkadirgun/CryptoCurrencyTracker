@@ -14,7 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.cryptocurrencytracker.databinding.FragmentLoginBinding
 import com.example.cryptocurrencytracker.util.Resource
-import com.example.cryptocurrencytracker.util.hide
+import com.example.cryptocurrencytracker.util.gone
 import com.example.cryptocurrencytracker.util.isEmailValid
 import com.example.cryptocurrencytracker.util.show
 import com.example.cryptocurrencytracker.util.showToast
@@ -29,6 +29,8 @@ class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels()
 
+    private val emailFromRegisterPage by lazy { LoginFragmentArgs.fromBundle(requireArguments()).email }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,6 +44,9 @@ class LoginFragment : Fragment() {
 
         setClicks()
 
+        if (emailFromRegisterPage != " ")
+            binding.email.setText(emailFromRegisterPage)
+
         viewModel.checkUserLoggedIn()
 
         lifecycleScope.launch {
@@ -51,17 +56,17 @@ class LoginFragment : Fragment() {
                         when(result){
                             is Resource.Error -> {
                                 Log.d("LoginFragment", "loginInfo: Error${result.message}")
-                                binding.progressBar.hide()
+                                binding.progressBar.gone()
                                 binding.mainContainer.show()
                                 result.message?.showToast(requireContext())
                             }
                             is Resource.Loading -> {
                                 Log.d("LoginFragment", "loginInfo: Loading")
-                                binding.mainContainer.hide()
+                                binding.mainContainer.gone()
                                 binding.progressBar.show()
                             }
                             is Resource.Success -> {
-                                if (result.data!!){
+                                if (result.data!! && emailFromRegisterPage == " "){
                                     goToHomePage()
                                     "user already logged in".showToast(requireContext())
                                 }
@@ -71,13 +76,13 @@ class LoginFragment : Fragment() {
                                             when(result){
                                                 is Resource.Error -> {
                                                     Log.d("LoginFragment", "loginInfo: Error${result.message}")
-                                                    binding.progressBar.hide()
+                                                    binding.progressBar.gone()
                                                     binding.mainContainer.show()
                                                     result.message?.showToast(requireContext())
                                                 }
                                                 is Resource.Loading -> {
                                                     Log.d("LoginFragment", "loginInfo: Loading")
-                                                    binding.mainContainer.hide()
+                                                    binding.mainContainer.gone()
                                                     binding.progressBar.show()
                                                 }
                                                 is Resource.Success -> {
@@ -96,7 +101,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun goToHomePage(){
-        binding.progressBar.hide()
+        binding.progressBar.gone()
         binding.mainContainer.show()
         findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
     }
@@ -113,10 +118,6 @@ class LoginFragment : Fragment() {
 
             registerNow.setOnClickListener {
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
-            }
-
-            goToHomeBtn.setOnClickListener {
-                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
             }
         }
     }

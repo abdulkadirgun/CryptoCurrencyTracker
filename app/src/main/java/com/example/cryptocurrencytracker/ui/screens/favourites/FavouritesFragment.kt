@@ -15,7 +15,7 @@ import com.example.cryptocurrencytracker.databinding.FragmentFavouritesBinding
 import com.example.cryptocurrencytracker.domain.model.CoinItem
 import com.example.cryptocurrencytracker.ui.common.FavouritesAdapter
 import com.example.cryptocurrencytracker.util.Resource
-import com.example.cryptocurrencytracker.util.hide
+import com.example.cryptocurrencytracker.util.gone
 import com.example.cryptocurrencytracker.util.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -48,8 +48,8 @@ class FavouritesFragment : Fragment() {
                     coins?.let {
                         when (coins) {
                             is Resource.Error -> {
-                                binding.rcv.hide()
-                                binding.progressBar.hide()
+                                binding.rcv.gone()
+                                binding.progressBar.gone()
                                 binding.errorText.apply {
                                     show()
                                     text = coins.message
@@ -57,13 +57,13 @@ class FavouritesFragment : Fragment() {
                             }
 
                             is Resource.Loading -> {
-                                binding.rcv.hide()
+                                binding.rcv.gone()
                                 binding.progressBar.show()
                             }
 
                             is Resource.Success -> {
                                 binding.rcv.show()
-                                binding.progressBar.hide()
+                                binding.progressBar.gone()
                                 setData(coins.data)
                             }
                         }

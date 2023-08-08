@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptocurrencytracker.domain.model.CoinDetailItem
 import com.example.cryptocurrencytracker.domain.model.CoinItem
+import com.example.cryptocurrencytracker.domain.model.DetailPageState
 import com.example.cryptocurrencytracker.domain.usecases.detail.GetCoinByIdUseCase
 import com.example.cryptocurrencytracker.domain.usecases.favourite.AddThisCoinIntoUserFavUseCase
 import com.example.cryptocurrencytracker.domain.usecases.favourite.CheckThisCoinIsInFavListUseCase
@@ -26,7 +27,7 @@ class DetailViewModel @Inject constructor(
     private val checkThisCoinIsInFavListUseCase: CheckThisCoinIsInFavListUseCase
 ) : ViewModel() {
 
-    private val _coinDetail: MutableStateFlow<Resource<CoinDetailItem>?> = MutableStateFlow(null)
+    private val _coinDetail: MutableStateFlow<DetailPageState?> = MutableStateFlow(null)
     val coinDetail = _coinDetail.asStateFlow()
 
     private val _isCoinInFav : MutableStateFlow<Resource<Boolean>?> = MutableStateFlow(null)
@@ -41,10 +42,10 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun getCoinDetail(coinId :String) {
+    fun getCoinDetail(coinId :String, isRefreshing :Boolean = false) {
         viewModelScope.launch {
             getCoinByIdUseCase(coinId).collect{ coin->
-                _coinDetail.update { coin }
+                _coinDetail.update { DetailPageState(coinDetail = coin, isRefreshing ) }
             }
         }
     }

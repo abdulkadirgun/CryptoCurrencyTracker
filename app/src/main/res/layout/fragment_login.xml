@@ -36,7 +36,7 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bitcoin Ticker"
+        android:text="@string/bitcoin_ticker"
         android:textSize="36sp"
         android:textStyle="bold"
         android:textColor="#333333"
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:hint="Email"
+            android:hint="@string/email"
             android:padding="12dp"
             android:textSize="16sp" />
 
@@ -128,13 +128,6 @@
         app:layout_constraintTop_toBottomOf="@id/login_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
-        <Button
-            android:id="@+id/go_to_home_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="go to home"
-            app:layout_constraintBottom_toBottomOf="parent"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

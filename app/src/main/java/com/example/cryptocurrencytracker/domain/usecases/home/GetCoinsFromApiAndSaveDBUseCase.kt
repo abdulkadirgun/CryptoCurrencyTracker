@@ -5,7 +5,7 @@ import com.example.cryptocurrencytracker.util.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetCoinsAndSaveDBUseCase @Inject constructor(
+class GetCoinsFromApiAndSaveDBUseCase @Inject constructor(
     private val repository: CryptoCurrencyRepository
 ) {
 

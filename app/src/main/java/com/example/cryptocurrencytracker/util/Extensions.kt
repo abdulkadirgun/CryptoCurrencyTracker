@@ -12,8 +12,12 @@ import kotlin.math.round
 fun View.show(){
     this.visibility = View.VISIBLE
 }
-fun View.hide(){
+fun View.gone(){
     this.visibility = View.GONE
+}
+
+fun View.hide(){
+    this.visibility = View.INVISIBLE
 }
 fun Fragment.findNavControllerSafely(id: Int): NavController? {
     return if (findNavController().currentDestination?.id == id) {

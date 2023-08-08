@@ -31,14 +31,14 @@ class CryptoCurrencyRepositoryImpl(
             emit(Resource.Loading())
 
                 val coins = cryptoApiDataSource.getCoinList()
-                coins.collect { coinsResource ->
-                    when (coinsResource) {
-                        is Resource.Error ->  emit(Resource.Error(coinsResource.message))
+                coins.collect { coinsFromApi ->
+                    when (coinsFromApi) {
+                        is Resource.Error ->  emit(Resource.Error(coinsFromApi.message))
                         is Resource.Loading -> emit(Resource.Loading())
                         is Resource.Success -> {
                             Log.d("CryptoCurrencyRepository", "api'den başarıyla çekildi")
                             roomDataSource.deleteAllData()
-                            coinsResource.data?.let { coinList ->
+                            coinsFromApi.data?.let { coinList ->
                                 roomDataSource.saveDataToDB(coinList.map { it.toEntity() })
                             }
                             emit(Resource.Success(true))
@@ -59,10 +59,17 @@ class CryptoCurrencyRepositoryImpl(
     }
 
     override suspend fun getCoinById(coinId : String) = cryptoApiDataSource.getCoinById(coinId)
+    override suspend fun getCoinList(): Flow<Resource<List<CoinItem>>> {
+        return cryptoApiDataSource.getCoinList()
+    }
 
 
     override suspend fun checkUserSignedOrNot(): Flow<Resource<Boolean>> {
         return authDataSource.checkUserSignedOrNot()
+    }
+
+    override suspend fun logout(): Flow<Resource<Boolean>> {
+        return authDataSource.logout()
     }
 
     override suspend fun register(email: String, password: String): Flow<Resource<AuthResult>> {

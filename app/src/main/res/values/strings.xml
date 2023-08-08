@@ -3,9 +3,13 @@
     <string name="search_coin">search coin</string>
     <string name="refresh_in_each_x_seconds">refresh in each x seconds</string>
     <string name="apply">APPLY</string>
-    <string name="x_usd">%.2f USD</string>
+    <string name="x_usd">%.2f $</string>
     <string name="login">LOGIN</string>
     <string name="password">Password</string>
     <string name="register">REGISTER</string>
     <string name="register_now">register now</string>
+    <string name="email">Email</string>
+    <string name="bitcoin_ticker">Bitcoin Ticker</string>
+    <string name="logout">Logout</string>
+    <string name="x_percentage">%%%s</string>
 </resources>
