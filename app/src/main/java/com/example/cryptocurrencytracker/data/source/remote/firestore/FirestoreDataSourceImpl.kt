@@ -18,13 +18,9 @@ class FirestoreDataSourceImpl(
             try{
                 emit(Resource.Loading())
 
-                Log.d("FirestoreDataSource", "addThisCoinToFav:1 ")
                 val param = firebaseFirestore.collection("users").document(userId)
                     .collection("favourite_coins").document(coin.id)
                     .set(coin).await()
-
-                Log.d("FirestoreDataSource", "addThisCoinToFav:2 ")
-
 
                 emit(Resource.Success(param))
             }

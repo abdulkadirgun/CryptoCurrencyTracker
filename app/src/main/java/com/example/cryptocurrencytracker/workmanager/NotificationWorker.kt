@@ -18,19 +18,14 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.cryptocurrencytracker.MainActivity
 import com.example.cryptocurrencytracker.R
-import com.example.cryptocurrencytracker.domain.model.CoinDetailItem
-import com.example.cryptocurrencytracker.domain.model.CoinItem
 import com.example.cryptocurrencytracker.domain.usecases.detail.GetCoinByIdUseCase
 import com.example.cryptocurrencytracker.domain.usecases.favourite.AddThisCoinIntoUserFavUseCase
-import com.example.cryptocurrencytracker.domain.usecases.favourite.DeleteThisCoinFromUserFavUseCase
 import com.example.cryptocurrencytracker.domain.usecases.favourite.GetFavCoinsUseCase
-import com.example.cryptocurrencytracker.domain.usecases.home.UpdateFavCoinsPriceUseCase
 import com.example.cryptocurrencytracker.util.Constants
 import com.example.cryptocurrencytracker.util.Resource
 import com.example.cryptocurrencytracker.util.roundToTwoDecimal
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.collect
 
 
 @HiltWorker
@@ -70,8 +65,7 @@ class NotificationWorker @AssistedInject constructor(
                                             /**
                                              * sync data with backend
                                              * */
-                                            addThisCoinIntoUserFavUseCase(coinNew.data!!.toCoinItem()).collect{
-                                            }
+                                            addThisCoinIntoUserFavUseCase(coinNew.data!!.toCoinItem()).collect{}
                                             Log.d("NotificationService", "old price:$oldPrice new price:$newPrice")
                                         }
                                     }

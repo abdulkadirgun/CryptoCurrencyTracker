@@ -19,13 +19,6 @@ fun View.gone(){
 fun View.hide(){
     this.visibility = View.INVISIBLE
 }
-fun Fragment.findNavControllerSafely(id: Int): NavController? {
-    return if (findNavController().currentDestination?.id == id) {
-        findNavController()
-    } else {
-        null
-    }
-}
 
 fun EditText.isNumber(): Boolean {
     val inputText = this.text.toString()

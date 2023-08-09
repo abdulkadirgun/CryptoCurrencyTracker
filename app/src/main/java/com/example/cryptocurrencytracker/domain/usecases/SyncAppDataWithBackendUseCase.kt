@@ -14,26 +14,24 @@ class SyncAppDataWithBackendUseCase @Inject constructor(
     private val workManager: WorkManager
 ) {
     operator fun invoke(){
-        // Create constraints (optional)
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
-        // Create a repeating work request
         val repeatingRequest = PeriodicWorkRequestBuilder<NotificationWorker>(
-            repeatInterval = Constants.SYNC_WITH_BACKEND_INTERVAL, // Minutes
+            repeatInterval = Constants.SYNC_WITH_BACKEND_INTERVAL,
             repeatIntervalTimeUnit = TimeUnit.MINUTES
         )
-            // todo
-            .setInitialDelay(5, TimeUnit.SECONDS) // 5 minutes initial delay
+            .setInitialDelay(15, TimeUnit.MINUTES) // initial delay
             .setConstraints(constraints)
             .build()
 
+        /** cancel works in each app open */
         workManager.cancelAllWork()
 
         // Schedule the work
         workManager.enqueueUniquePeriodicWork(
-            "MyWorkerTag",
+            "NotificationWorker",
             ExistingPeriodicWorkPolicy.KEEP,
             repeatingRequest
         )

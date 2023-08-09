@@ -52,19 +52,13 @@ class DetailViewModel @Inject constructor(
 
     fun addCoinIntoFav(coinItem: CoinItem){
         viewModelScope.launch {
-            addThisCoinIntoUserFavUseCase(coinItem).collect{
-                // todo
-                Log.d("DetailViewModel", "addThisCoinIntoUserFavUseCase: $it ")
-            }
+            addThisCoinIntoUserFavUseCase(coinItem).collect{}
         }
     }
 
     fun deleteCoinFromFav(coinItem: CoinItem){
         viewModelScope.launch {
-            deleteThisCoinFromUserFavUseCase(coinItem).collect{
-                // todo
-                Log.d("DetailViewModel", "deleteThisCoinFromUserFavUseCase: $it ")
-            }
+            deleteThisCoinFromUserFavUseCase(coinItem).collect{}
         }
     }
 

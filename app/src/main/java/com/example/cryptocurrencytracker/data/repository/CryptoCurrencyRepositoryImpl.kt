@@ -43,11 +43,6 @@ class CryptoCurrencyRepositoryImpl(
                             }
                             emit(Resource.Success(true))
                             Log.d("CryptoCurrencyRepository", "db'ye kaydedildi")
-                           /* val dbData = roomDataSource.getDataFromDB()
-                            dbData.collect { coinsDB ->
-                                emit(Resource.Success(coinsDB))
-                                Log.d("CryptoCurrencyRepository", "coinsDB emit ediliyor")
-                            }*/
                         }
                     }
                 }

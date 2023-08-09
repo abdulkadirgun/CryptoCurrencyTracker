@@ -27,7 +27,6 @@ class HomeViewModel @Inject constructor(
     private val getCoinSearchResultUseCase: GetCoinSearchResultUseCase,
     private val getCoinsFromDBUseCase: GetCoinsFromDBUseCase,
     private val logoutUserUseCase: LogoutUserUseCase,
-    private val addThisCoinIntoUserFavUseCase: AddThisCoinIntoUserFavUseCase
     ) : ViewModel() {
 
     private val _coinList: MutableStateFlow<Resource<Any>?> = MutableStateFlow(null)
@@ -57,29 +56,6 @@ class HomeViewModel @Inject constructor(
         }
 
     }
-
-   /* fun getCoinForTheFirstTime(){
-        viewModelScope.launch {
-            getCoinsForEachSession().collect{ isSuccess->
-                when(isSuccess){
-                    is Resource.Error -> {
-                        _isCoinsFetchedAndSaved.update { Resource.Error(isSuccess.message) }
-                        Log.d("burdayım", "1 ${isSuccess.message}")
-                    }
-                    is Resource.Loading -> {
-                        Log.d("burdayım", "2")
-                        _isCoinsFetchedAndSaved.update { Resource.Loading() }
-                    }
-                    is Resource.Success -> {
-                        Log.d("burdayım", "3")
-                        INITIAL_FETCH = true
-                    }
-                }
-            }
-        }.onJoin
-    }*/
-
-
 
     fun getSearchResult(coinName: String){
         searchJob?.cancel()

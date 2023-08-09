@@ -10,7 +10,7 @@ class GetCoinsFromDBUseCase @Inject constructor(
     private val repository: CryptoCurrencyRepository
 ) {
 
-    suspend operator fun invoke(): Flow<List<CoinEntity>> {
+    operator fun invoke(): Flow<List<CoinEntity>> {
         return repository.getDataFromDB()
 
     }

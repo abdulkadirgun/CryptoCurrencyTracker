@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptocurrencytracker.data.source.local.db.entities.CoinEntity
 import com.example.cryptocurrencytracker.databinding.CoinRowItemBinding
-
 class HomeAdapter(
     private val coinList :ArrayList<CoinEntity>,
     private val mContext: Context,

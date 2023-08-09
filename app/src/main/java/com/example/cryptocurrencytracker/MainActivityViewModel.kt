@@ -7,14 +7,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    private val syncAppDataWithBackendUseCase: SyncAppDataWithBackendUseCase,
-
+    private val syncAppDataWithBackendUseCase: SyncAppDataWithBackendUseCase
     ) : ViewModel() {
 
     fun scheduleWorksToSyncAppWithBackend(){
         syncAppDataWithBackendUseCase()
     }
-
-
 
 }

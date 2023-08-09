@@ -12,16 +12,16 @@ interface CryptoCurrencyRepository {
     //Room
     suspend fun saveDataToDB(coinList: List<CoinEntity>)
     fun getDataFromDB() : Flow<List<CoinEntity>>
+    fun getSearchResult(coinName: String): Flow<List<CoinEntity>>
+
 
     //Api
     suspend fun getCoinById(coinId: String) : Flow<Resource<CoinDetailItem>>
+    suspend fun getCoinList() : Flow<Resource<List<CoinItem>>>
+
 
     //Api and Room
-
-    suspend fun getCoinList() : Flow<Resource<List<CoinItem>>>
     suspend fun getCoinListFromRemoteAndSaveDB() : Flow<Resource<Boolean>>
-
-    fun getSearchResult(coinName: String): Flow<List<CoinEntity>>
 
 
     //Auth
@@ -30,6 +30,8 @@ interface CryptoCurrencyRepository {
     suspend fun register(email : String, password: String) : Flow<Resource<AuthResult>>
     suspend fun login(email : String, password: String) : Flow<Resource<AuthResult>>
 
+
+    //Firestore
     suspend fun addThisCoinToFav(coin: CoinItem): Flow<Resource<Void>>
     suspend fun deleteThisCoinFromFav(coin: CoinItem): Flow<Resource<Void>>
     suspend fun getFavCoins(): Flow<Resource<MutableList<CoinItem>>>

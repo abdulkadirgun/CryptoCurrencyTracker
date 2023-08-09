@@ -20,7 +20,7 @@ interface CryptoCurrencyDao {
     @Query("DELETE FROM CoinEntity")
     suspend fun deleteAllData()
 
-    @Query("SELECT * FROM CoinEntity WHERE name LIKE '%' || :coinName || '%'")
+    @Query("SELECT * FROM CoinEntity WHERE name LIKE '%' || :coinName || '%' OR name LIKE '%' || :coinName")
     fun getSearchResult(coinName: String): Flow<List<CoinEntity>>
 
 

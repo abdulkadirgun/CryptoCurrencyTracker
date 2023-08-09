@@ -78,7 +78,6 @@ class FavouritesFragment : Fragment() {
     private fun setData(data: List<CoinItem>?) {
         binding.rcv.apply {
 
-            //todo add anim
             adapter = FavouritesAdapter(data as ArrayList<CoinItem>, requireContext()){
                 findNavController().navigate(
                     FavouritesFragmentDirections.actionFavouritesFragmentToDetailFragment(

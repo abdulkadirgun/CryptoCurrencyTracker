@@ -11,7 +11,6 @@ class AddThisCoinIntoUserFavUseCase @Inject constructor(
     private val repository: CryptoCurrencyRepository
 ){
     suspend operator fun invoke(coinItem: CoinItem): Flow<Resource<Void>> {
-        Log.d("NotificationService", "coinItem: $coinItem")
         return repository.addThisCoinToFav(coinItem)
     }
 }

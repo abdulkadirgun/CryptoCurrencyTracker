@@ -22,30 +22,12 @@ class FavouritesViewModel @Inject constructor(
     var coinList = _coinList.asStateFlow()
 
 
-
-    init {
-        //addFavThisCoin()
-        //getFavCoins()
-        //deleteFavCoins()
-        //checkCoinIsInFavList()
-    }
-
     fun getFavCoins() {
         viewModelScope.launch {
             getFavCoinsUseCase().collect{ coins->
                 _coinList.update{ coins }
             }
-
-
-           /* val snapshot = firestore.collection("users").document(firebaseAuth.currentUser!!.uid)
-                .collection("favourite_coins").get().await()
-
-            val data = snapshot.toObjects(CoinItem::class.java)
-            Log.d("FavouritesViewModel", "getFavCoins: $data")*/
         }
     }
-
-
-
 
 }

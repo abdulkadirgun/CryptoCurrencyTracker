@@ -52,45 +52,14 @@ class HomeFragment : Fragment() {
         else
             viewModel.getCoinsFromDB()
 
-        setClicks()
-
-        // todo save state
-        handleEdittextChanged()
-
-        // todo swipe refresh layout
-
         collectData()
 
+        setClicks()
 
+        handleEdittextChanged()
     }
 
     private fun collectData() {
-       /* lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.isCoinsFetchedAndSaved.collect { fetchAndSave ->
-                    when (fetchAndSave) {
-                            is Resource.Error -> {
-                                coinJob?.cancel()
-                                binding.rcv.hide()
-                                binding.progressBar.hide()
-                                binding.errorText.apply {
-                                    show()
-                                    text = fetchAndSave.message
-                                }
-                            }
-
-                            is Resource.Loading -> {
-                               *//* binding.rcv.hide()
-                                binding.progressBar.show()*//*
-                            }
-
-                            is Resource.Success -> {
-                            }
-                        }
-                }
-            }
-        }*/
-
         coinJob = lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
@@ -164,7 +133,6 @@ class HomeFragment : Fragment() {
     private fun setData(data: List<CoinEntity>?) {
         binding.rcv.apply {
 
-            //todo add anim
             adapter = HomeAdapter(data as ArrayList<CoinEntity>, requireContext()){
                 findNavController().navigate(
                     HomeFragmentDirections.actionHomeFragmentToDetailFragment(
@@ -181,7 +149,6 @@ class HomeFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 s?.let {
                     if (s.isNotBlank()) {
-                        Log.d("searchCoinEt", "istek atıldı")
                         viewModel.getSearchResult(s.toString())
                     }
                 }

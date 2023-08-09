@@ -149,7 +149,6 @@ class DetailFragment : Fragment() {
     private fun setClicks() {
         binding.refreshIntervalApplyBtn.setOnClickListener {
 
-            //todo sadece fiyatı güncelle
             if (binding.refreshIntervalEt.isNumber())
                 handleRefreshPriceFeature(binding.refreshIntervalEt.text.toString().toLong())
             else
@@ -164,18 +163,18 @@ class DetailFragment : Fragment() {
                     viewModel.addCoinIntoFav(coinItem!!)
                 else
                     viewModel.deleteCoinFromFav(coinItem!!)
-            }
 
-            /** request permission for android 13 and upper */
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-                ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
-            ) {
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                /** request permission for android 13 and upper */
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                    ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+                /***/
             }
         }
-
     }
 
     private fun handleRefreshPriceFeature(interval: Long) {
@@ -225,7 +224,6 @@ class DetailFragment : Fragment() {
                 coinSymbol.text = data.symbol
                 hashingAlgorithm.text = data.hashing_algorithm
                 coinDescription.text = data.description.en
-
 
             }
         }
