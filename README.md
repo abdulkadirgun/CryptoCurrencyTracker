@@ -29,7 +29,7 @@
 
 
 ## Tech Stack
-- Hilt for Dependency Injection
+- Hilt
 - Coroutines & Flow
 - Jetpack Navigation
 - Retrofit & Gson
